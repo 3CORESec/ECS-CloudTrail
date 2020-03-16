@@ -1,5 +1,10 @@
 # CloudTrail-ECS-Pipeline
-Elastic Ingest Pipeline mapped to ECS
+Elastic Ingest Pipeline mapped to ECS and AWS exported fields.
+
+## Project goals
+The goal of this project is to create an ingestion pipeline for Elasticsearch while staying in sync with Elastic in their developments of mapping AWS CloudTrail data fields to [ECS](https://www.elastic.co/guide/en/ecs/current/index.html) or by defining them as [AWS-specific](https://www.elastic.co/guide/en/beats/filebeat/master/exported-fields-aws.html) *(also known as export fields)*. 
+
+The usage of this pipeline is particularly useful when integrating this normalization with [Functionbeat](https://www.elastic.co/beats/functionbeat).
 
 # Pipeline Reference Fields
 
@@ -37,3 +42,10 @@ Elastic Ingest Pipeline mapped to ECS
 | resources.ARN                                       |                     | aws.cloudtrail.resources.arn                                   | [AWS Fields](https://www.elastic.co/guide/en/beats/filebeat/master/exported-fields-aws.html) |
 | resources.accountId                                 |                     | aws.cloudtrail.resources.account_id                            | [AWS Fields](https://www.elastic.co/guide/en/beats/filebeat/master/exported-fields-aws.html) |
 | resources.type                                      |                     | aws.cloudtrail.resources.type                                  | [AWS Fields](https://www.elastic.co/guide/en/beats/filebeat/master/exported-fields-aws.html) |
+
+# Pipeline installation
+
+## Integration with Functionbeat
+
+# Additional fields?
+We're constantly analyzing AWS CloudTrail data for any missing fields *(not present in the reference table)*. If you'd like to help, please open an issue here, or directly with Elastic and let us know. 
