@@ -8,7 +8,7 @@ The usage of this pipeline is particularly useful when integrating this normaliz
 
 # Pipeline Reference Fields
 
-| Source Field                                        | ECS Field           | EXPORTED                                                       | Category                                                                                     |
+| Source Field                                        | ECS Field           | Exported Fields                                                       | Category                                                                                     |
 |-----------------------------------------------------|---------------------|----------------------------------------------------------------|----------------------------------------------------------------------------------------------|
 | awsRegion                                           | cloud.region        |                                                                | [ECS - Cloud Fields](https://www.elastic.co/guide/en/ecs/current/ecs-cloud.html)             |
 | eventID                                             | event.id            |                                                                | [ECS - Event Fields](https://www.elastic.co/guide/en/ecs/current/ecs-event.html)             |
