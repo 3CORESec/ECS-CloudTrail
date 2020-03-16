@@ -1,4 +1,4 @@
-# CloudTrail-ECS-Pipeline
+# AWS CloudTrail pipeline
 Elastic Ingest Pipeline mapped to ECS and AWS exported fields.
 
 ## Project goals
