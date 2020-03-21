@@ -14,6 +14,7 @@ Formatting of the table in Github didn't look so good, so we moved the reference
 
 ## Integration with Functionbeat
 Just add the following to your **functionbeat.yml**:
+
 ![alt text](./imgs/fb-config.png "fb-config.png")
 
 # Additional fields?
