@@ -18,6 +18,9 @@ We're inline with the standards defined by Elastic, however, we chose to transfo
 As intensive users of [Functionbeat](https://www.elastic.co/beats/functionbeat) and since Elastic's focus was on performing transformations through [Filebeat](https://www.elastic.co/beats/filebeat), we applied their methodology but in a different transformation mechanism. If we ever have a transformation that is not in sync or somehow differs from what Elastic is doing, all of them will be clearly identified in the reference table below. 
 
 # Pipeline installation
+
+**Pipeline:** [cloudtrail-ecs.json](./cloudtrail-ecs.json)
+
 ![alt text](./imgs/put-pipeline.png "put-pipeline")
 
 # Pipeline Reference Fields
