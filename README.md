@@ -1,4 +1,4 @@
-# AWS CloudTrail pipeline
+# AWS CloudTrail pipeline for Functionbeat
 Elastic Ingest Pipeline mapped to ECS and AWS exported fields.
 
 ## Project goals
