@@ -1,0 +1,351 @@
+{
+  "description": "3CORESec Ingest Pipeline",
+  "processors": [
+    {
+      "rename": {
+        "field": "message",
+        "target_field": "event.original"
+      }
+    },
+    {
+      "json": {
+        "field": "event.original",
+        "target_field": "json"
+      }
+    },
+    {
+      "rename": {
+        "field": "json.eventVersion",
+        "target_field": "aws.cloudtrail.event_version",
+        "ignore_failure": true
+      }
+    },
+    {
+      "date": {
+        "field": "json.eventTime",
+        "target_field": "@timestamp",
+        "ignore_failure": true,
+        "formats": ["ISO8601"]
+      }
+    },
+    {
+      "rename": {
+        "field": "json.eventSource",
+        "target_field": "event.provider",
+        "ignore_failure": true
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.json.eventName != null) {\n  ctx.event.action = ctx.json.eventName.toString();\n}\n",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.awsRegion",
+        "target_field": "cloud.region",
+        "ignore_failure": true
+      }
+    },
+    {
+      "set": {
+        "field": "cloud.provider",
+        "value": "aws",
+        "ignore_failure": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "json.sourceIPAddress",
+        "target_field": "source.geo",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.sourceIPAddress",
+        "target_field": "source.address",
+        "ignore_failure": true
+      }
+    },
+    {
+      "user_agent": {
+        "field": "json.userAgent",
+        "target_field": "user_agent",
+        "on_failure": [
+          {
+            "rename": {
+              "field": "json.userAgent",
+              "target_field": "user_agent.original",
+              "ignore_failure": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.json.requestParameters != null) {\n  ctx.aws.cloudtrail.request_parameters = ctx.json.requestParameters.toString();\n}\n",
+        "ignore_failure": true
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.json.responseElements != null) {\n  ctx.aws.cloudtrail.response_elements = ctx.json.responseElements.toString();\n}\n",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.requestID",
+        "target_field": "aws.cloudtrail.request_id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.eventID",
+        "target_field": "event.id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.eventType",
+        "target_field": "aws.cloudtrail.event_type",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.recipientAccountId",
+        "target_field": "aws.cloudtrail.recipient_account_id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.accessKeyId",
+        "target_field": "aws.cloudtrail.user_identity.access_key_id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.accountId",
+        "target_field": "cloud.account.id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.invokedBy",
+        "target_field": "aws.cloudtrail.user_identity.invoked_by",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.principalId",
+        "target_field": "user.id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "date": {
+        "field": "json.userIdentity.sessionContext.attributes.creationDate",
+        "target_field": "aws.cloudtrail.user_identity.session_context.creation_date",
+        "ignore_failure": true,
+        "formats": ["ISO8601"]
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.sessionContext.attributes.mfaAuthenticated",
+        "target_field": "aws.cloudtrail.user_identity.session_context.mfa_authenticated",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.arn",
+        "target_field": "aws.cloudtrail.user_identity.arn",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.vpcEndpointId",
+        "target_field": "aws.cloudtrail.vpc_endpoint_id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.errorMessage",
+        "target_field": "aws.cloudtrail.error_message",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.errorCode",
+        "target_field": "aws.cloudtrail.error_code",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.sharedEventId",
+        "target_field": "aws.cloudtrail.shared_event_id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.type",
+        "target_field": "aws.cloudtrail.user_identity.type",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.userIdentity.userName",
+        "target_field": "user.name",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.apiVersion",
+        "target_field": "aws.cloudtrail.api_version",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.managementEvent",
+        "target_field": "aws.cloudtrail.management_event",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.readOnly",
+        "target_field": "aws.cloudtrail.read_only",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.resources.ARN",
+        "target_field": "aws.cloudtrail.resources.arn",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.resources.accountId",
+        "target_field": "aws.cloudtrail.resources.account_id",
+        "ignore_failure": true
+      }
+    },
+    {
+      "rename": {
+        "field": "json.resources.type",
+        "target_field": "aws.cloudtrail.resources.type",
+        "ignore_failure": true
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.json.additionalEventData != null) {\n  ctx.aws.cloudtrail.additional_eventdata = ctx.json.additionalEventData.toString();\n}\n",
+        "ignore_failure": true
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "source": "if (ctx.json.serviceEventDetails != null) {\n  ctx.aws.cloudtrail.service_event_details = ctx.json.serviceEventDetails.toString();\n}\n",
+        "ignore_failure": true
+      }
+    },
+    {
+      "script": {
+        "lang": "painless",
+        "ignore_failure": true,
+        "source": "void addRelatedUser(def ctx, String userName) {\n  if (ctx.related == null) {\n    Map map = new HashMap();\n    ctx.put(\"related\", map);\n  }\n  if (ctx.related.user == null) {\n    ArrayList al = new ArrayList();\n    ctx.related.put(\"user\", al);\n  }\n  ctx.related.user.add(userName);\n} ctx.event.type = 'info'; ctx.event.kind = 'event'; if (ctx.aws.cloudtrail.error_code != null || ctx.aws.cloudtrail.error_message != null) {\n    ctx.event.outcome = 'failure'\n} else {\n    ctx.event.outcome = 'success'\n} if (ctx.json?.eventName == 'ConsoleLogin') {\n  ctx.event.category = 'authentication';\n  if (ctx.json?.responseElements.ConsoleLogin != null) {\n    ctx.event.outcome = Processors.lowercase(ctx.json.responseElements.ConsoleLogin);\n  }\n} if (ctx.json?.requestParameters.userName != null) {\n  addRelatedUser(ctx, ctx.json.requestParameters.userName);\n} if (ctx.json?.requestParameters.newUserName != null) {\n  addRelatedUser(ctx, ctx.json.requestParameters.newUserName);\n}"
+      }
+    },
+    {
+      "remove": {
+        "field": ["json"],
+        "ignore_missing": true
+      }
+    },
+
+    {
+      "dissect": {
+        "field": "event.original",
+        "pattern": "%{aws.vpcflow.version} %{cloud.account.id} %{interface.id} %{source.address} %{destination.address} %{source.port} %{destination.port} %{network.iana_number} %{network.packets} %{network.bytes} %{aws.vpcflow.start} %{aws.vpcflow.end} %{aws.vpcflow.action} %{aws.vpcflow.log_status}"
+      }
+    },
+    {
+      "date": {
+        "field": "aws.vpcflow.end",
+        "target_field": "@timestamp",
+        "ignore_failure": true,
+        "formats": ["UNIX"]
+      }
+    },
+    {
+      "date": {
+        "field": "aws.vpcflow.start",
+        "target_field": "event.start",
+        "ignore_failure": true,
+        "formats": ["UNIX"]
+      }
+    },
+    {
+      "date": {
+        "field": "aws.vpcflow.end",
+        "target_field": "event.end",
+        "ignore_failure": true,
+        "formats": ["UNIX"]
+      }
+    },
+    {
+      "remove": {
+        "field": ["aws.vpcflow.start", "aws.vpcflow.end"],
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "source.address",
+        "target_field": "source.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "destination.address",
+        "target_field": "destination.geo",
+        "ignore_missing": true
+      }
+    }
+  ],
+  "on_failure": [
+    {
+      "set": {
+        "field": "error.message",
+        "value": "{{ _ingest.on_failure_message }}"
+      }
+    }
+  ]
+}
