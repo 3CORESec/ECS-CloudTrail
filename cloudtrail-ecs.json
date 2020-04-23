@@ -1,7 +1,7 @@
-PUT _ingest/pipeline/cloudtrail-ecs
 {
 	"description": "3CORESec Ingest Pipeline",
-	"processors": [{
+	"processors": [
+		{
 			"rename": {
 				"field": "message",
 				"target_field": "event.original"
@@ -43,7 +43,7 @@ PUT _ingest/pipeline/cloudtrail-ecs
 				"source": "if (ctx.json.eventName != null) {\n  ctx.event.action = ctx.json.eventName.toString();\n}\n",
 				"ignore_failure": true
 			}
-		},		
+		},
 		{
 			"rename": {
 				"field": "json.awsRegion",
@@ -62,16 +62,16 @@ PUT _ingest/pipeline/cloudtrail-ecs
 			"geoip": {
 				"field": "json.sourceIPAddress",
 				"target_field": "source.geo",
-		        "properties": [
-		          "COUNTRY_ISO_CODE",
-		          "COUNTRY_NAME",
-		          "CONTINENT_NAME",
-		          "REGION_ISO_CODE",
-		          "REGION_NAME",
-		          "CITY_NAME",
-		          "TIMEZONE",
-		          "LOCATION"
-		        ],
+				"properties": [
+					"COUNTRY_ISO_CODE",
+					"COUNTRY_NAME",
+					"CONTINENT_NAME",
+					"REGION_ISO_CODE",
+					"REGION_NAME",
+					"CITY_NAME",
+					"TIMEZONE",
+					"LOCATION"
+				],
 				"ignore_missing": true
 			}
 		},
@@ -86,13 +86,15 @@ PUT _ingest/pipeline/cloudtrail-ecs
 			"user_agent": {
 				"field": "json.userAgent",
 				"target_field": "user_agent",
-				"on_failure": [{
-					"rename": {
-						"field": "json.userAgent",
-						"target_field": "user_agent.original",
-						"ignore_failure": true
+				"on_failure": [
+					{
+						"rename": {
+							"field": "json.userAgent",
+							"target_field": "user_agent.original",
+							"ignore_failure": true
+						}
 					}
-				}]
+				]
 			}
 		},
 		{
@@ -302,14 +304,12 @@ PUT _ingest/pipeline/cloudtrail-ecs
 				"ignore_missing": true
 			}
 		},
-
-
-    {
-       "dissect": {
-          "field": "event.original",
-          "pattern": "%{aws.vpcflow.version} %{cloud.account.id} %{interface.id} %{source.address} %{destination.address} %{source.port} %{destination.port} %{network.iana_number} %{network.packets} %{network.bytes} %{aws.vpcflow.start} %{aws.vpcflow.end} %{aws.vpcflow.action} %{aws.vpcflow.log_status}"
-       }
-    },
+		{
+			"dissect": {
+				"field": "event.original",
+				"pattern": "%{aws.vpcflow.version} %{cloud.account.id} %{interface.id} %{source.address} %{destination.address} %{source.port} %{destination.port} %{network.iana_number} %{network.packets} %{network.bytes} %{aws.vpcflow.start} %{aws.vpcflow.end} %{aws.vpcflow.action} %{aws.vpcflow.log_status}"
+			}
+		},
 		{
 			"date": {
 				"field": "aws.vpcflow.end",
@@ -353,16 +353,16 @@ PUT _ingest/pipeline/cloudtrail-ecs
 			"geoip": {
 				"field": "source.address",
 				"target_field": "source.geo",
-		        "properties": [
-		          "COUNTRY_ISO_CODE",
-		          "COUNTRY_NAME",
-		          "CONTINENT_NAME",
-		          "REGION_ISO_CODE",
-		          "REGION_NAME",
-		          "CITY_NAME",
-		          "TIMEZONE",
-		          "LOCATION"
-		        ],
+				"properties": [
+					"COUNTRY_ISO_CODE",
+					"COUNTRY_NAME",
+					"CONTINENT_NAME",
+					"REGION_ISO_CODE",
+					"REGION_NAME",
+					"CITY_NAME",
+					"TIMEZONE",
+					"LOCATION"
+				],
 				"ignore_missing": true
 			}
 		},
@@ -370,28 +370,26 @@ PUT _ingest/pipeline/cloudtrail-ecs
 			"geoip": {
 				"field": "destination.address",
 				"target_field": "destination.geo",
-		        "properties": [
-		          "COUNTRY_ISO_CODE",
-		          "COUNTRY_NAME",
-		          "CONTINENT_NAME",
-		          "REGION_ISO_CODE",
-		          "REGION_NAME",
-		          "CITY_NAME",
-		          "TIMEZONE",
-		          "LOCATION"
-		        ],
+				"properties": [
+					"COUNTRY_ISO_CODE",
+					"COUNTRY_NAME",
+					"CONTINENT_NAME",
+					"REGION_ISO_CODE",
+					"REGION_NAME",
+					"CITY_NAME",
+					"TIMEZONE",
+					"LOCATION"
+				],
 				"ignore_missing": true
 			}
 		}
-		
-		
-
-		
 	],
-	"on_failure": [{
-		"set": {
-			"field": "error.message",
-			"value": "{{ _ingest.on_failure_message }}"
+	"on_failure": [
+		{
+			"set": {
+				"field": "error.message",
+				"value": "{{ _ingest.on_failure_message }}"
+			}
 		}
-	}]
+	]
 }
