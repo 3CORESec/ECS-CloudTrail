@@ -72,7 +72,7 @@
           "TIMEZONE",
           "LOCATION"
         ],
-        "ignore_missing": true
+        "ignore_failure": true
       }
     },
     {
@@ -234,10 +234,13 @@
       }
     },
     {
-      "rename": {
+      "date": {
         "field": "json.apiVersion",
         "target_field": "aws.cloudtrail.api_version",
-        "ignore_failure": true
+        "ignore_failure": true,
+        "formats": [
+          "UNIX"
+        ]
       }
     },
     {
@@ -363,7 +366,7 @@
           "TIMEZONE",
           "LOCATION"
         ],
-        "ignore_missing": true
+        "ignore_failure": true
       }
     },
     {
@@ -380,7 +383,7 @@
           "TIMEZONE",
           "LOCATION"
         ],
-        "ignore_missing": true
+        "ignore_failure": true
       }
     }
   ],
