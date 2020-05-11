@@ -309,6 +309,7 @@
     },
     {
       "dissect": {
+        "if": "ctx.aws?.cloudtrail?.event_version == null",
         "field": "event.original",
         "pattern": "%{aws.vpcflow.version} %{cloud.account.id} %{interface.id} %{source.address} %{destination.address} %{source.port} %{destination.port} %{network.iana_number} %{network.packets} %{network.bytes} %{aws.vpcflow.start} %{aws.vpcflow.end} %{aws.vpcflow.action} %{aws.vpcflow.log_status}"
       }
